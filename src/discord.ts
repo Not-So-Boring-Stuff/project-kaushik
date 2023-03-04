@@ -118,11 +118,13 @@ bot.on(
         const server = await Server.findOne({ id: interaction.guild?.id });
 
         if (interaction.isCommand()) {
+            console.log("interaction", interaction);
             const { commandName } = interaction;
+            interaction.deferReply();
             const message: BaseMessageOptions = await slashCommands[
                 commandName
             ](interaction, server);
-            message && (await interaction.reply(message));
+            interaction.editReply(message);
         } else if (interaction.isButton()) {
             console.info(
                 `${username}#${discriminator}: ${interaction.customId}`
